@@ -1,0 +1,25 @@
+
+local
+   $(SML_LIB)/basis/basis.mlb
+   $(SML_LIB)/mlyacc-lib/mlyacc-lib.mlb
+
+   ann
+      "warnUnused false"
+   in
+      util.sml
+   end
+
+   sym.sml
+
+   ann
+      "warnUnused false"
+   in
+      indent.lex.sml
+   end
+
+   indent.sml
+   run.sml
+in
+
+end
+

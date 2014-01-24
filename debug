@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./indent < test.sml -debug

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+c="1 2 3"
+grep 4 <(echo $c) >/dev/null
+
+tests=$(ls *.sml)
+
+fail=0
+
+have_comments="060.sml"
+
+echo "Running $(ls *.sml | wc -l | sed 's/[^0-9]//g') tests"
+for test in $tests; do
+    out1=$test.out1
+    out=$test.out
+
+    # already indented
+    ../indent < $test > $out
+    if ! $(cmp $test $out &> /dev/null); then
+        fail=1
+        echo "Test $test failed when already indented!"
+    fi
+
+    # flushleft for examples without comments
+    if ! $(grep $test <(echo $have_comments) >/dev/null); then
+        sed -E 's/^ +//' $test > $out1
+        ../indent < $out1 > $out
+        if ! $(cmp $test $out &> /dev/null); then
+            fail=1
+            echo "Test $test failed on flush-left!"
+        fi
+    fi
+    # spaces in front of lines
+    sed -E 's/^/             /' $test > $out1
+    ../indent < $out1 > $out
+    if ! $(cmp $test $out &> /dev/null); then
+        fail=1
+        echo "Test $test failed on added spaces!"
+    fi
+
+    rm -f $out $out1
+done
+
+big=time/hamlet.sml
+echo "Timing $big"
+echo "lines : $(wc -l $big | sed 's/[^0-9]//g')"
+{ time -p ../indent < $big >/dev/null; } 2>&1 | grep real | sed 's/real/time  : /'
+
+exit $fail
+

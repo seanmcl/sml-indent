@@ -1,0 +1,5 @@
+
+When you have a buffer open in two windows, the buffer without point gets
+ set to the beginning when you indent.
+
+tabbing always makes the file look changed, even if textually it is unchanged.

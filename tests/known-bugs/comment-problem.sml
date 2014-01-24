@@ -1,0 +1,4 @@
+datatype t = (* *)
+   A
+           | B
+

@@ -1,0 +1,3 @@
+
+structure S : S =
+   F()
